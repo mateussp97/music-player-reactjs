@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { playAudio } from "./../util";
 import {
   faPlay,
   faAngleLeft,
@@ -64,21 +63,21 @@ const Player = ({
   };
 
   //! Pula para próxima música, ou retorna para a anterior
-  const skipTrackHandler = (direction) => {
+  const skipTrackHandler = async (direction) => {
     let currentIndex = songs.findIndex((song) => song.id === currentSong.id);
 
     if (direction === "skip-forward") {
-      setCurrentSong(songs[(currentIndex + 1) % songs.length]);
+      await setCurrentSong(songs[(currentIndex + 1) % songs.length]);
     }
     if (direction === "skip-back") {
       if ((currentIndex - 1) % songs.length === -1) {
-        setCurrentSong(songs[songs.length - 1]);
-        playAudio(isPlaying, audioRef); //!Quando pular a música, da última para a primeira, fazer com que essa próxima música(primeira) toque automaticamente
+        await setCurrentSong(songs[songs.length - 1]);
+        if (isPlaying) audioRef.current.play(); //!Quando pular a música, da última para a primeira, fazer com que essa próxima música(primeira) toque automaticamente
         return;
       }
-      setCurrentSong(songs[(currentIndex - 1) % songs.length]);
+      await setCurrentSong(songs[(currentIndex - 1) % songs.length]);
     }
-    playAudio(isPlaying, audioRef); //!Quando pular a música, fazer com que ela toque automaticamente
+    if (isPlaying) audioRef.current.play(); //!Quando pular a música, fazer com que ela toque automaticamente
   };
 
   //! Adicionando estilos a classe animate-track

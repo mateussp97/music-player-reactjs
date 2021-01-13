@@ -1,5 +1,4 @@
 import React from "react";
-import { playAudio } from "../util";
 
 const LibrarySong = ({
   song,
@@ -10,8 +9,8 @@ const LibrarySong = ({
   audioRef,
   isPlaying,
 }) => {
-  const songSelectHandler = () => {
-    setCurrentSong(song);
+  const songSelectHandler = async () => {
+    await setCurrentSong(song);
 
     //! Adiciona a estilização na song atual tocando (conforme active true/false), isso no libraryStatus
     const newSongs = songs.map((song) => {
@@ -30,7 +29,7 @@ const LibrarySong = ({
     setSongs(newSongs);
 
     //! Verifica se a música está tocando
-    playAudio(isPlaying, audioRef);
+    if (isPlaying) audioRef.current.play();
   };
 
   return (
