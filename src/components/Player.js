@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faPlay,
@@ -18,11 +18,11 @@ const Player = ({
   songs,
   setSongs,
 }) => {
-  //* UseEffect
-  useEffect(() => {
-    //! Adiciona a estilização na song atual tocando (conforme active true/false), isso no libraryStatus
+  //* Event Handlers
+  //! Adiciona a estilização na song atual tocando (conforme active true/false), isso no libraryStatus
+  const activeLibraryHandler = (nextPrev) => {
     const newSongs = songs.map((song) => {
-      if (song.id === currentSong.id) {
+      if (song.id === nextPrev.id) {
         return {
           ...song,
           active: true,
@@ -35,9 +35,7 @@ const Player = ({
       }
     });
     setSongs(newSongs);
-  }, [currentSong]); //! [currentSong] é um parâmentro onde essa função vai ser executada toda vez que currentSong for atualizado
-
-  //* Event Handlers
+  };
   //! Verifica se a música está tocando, se está, pausa, se não da play
   const playSongHandler = () => {
     if (isPlaying) {
@@ -68,14 +66,17 @@ const Player = ({
 
     if (direction === "skip-forward") {
       await setCurrentSong(songs[(currentIndex + 1) % songs.length]);
+      activeLibraryHandler(songs[(currentIndex + 1) % songs.length]);
     }
     if (direction === "skip-back") {
       if ((currentIndex - 1) % songs.length === -1) {
         await setCurrentSong(songs[songs.length - 1]);
+        activeLibraryHandler(songs[currentIndex - 1]);
         if (isPlaying) audioRef.current.play(); //!Quando pular a música, da última para a primeira, fazer com que essa próxima música(primeira) toque automaticamente
         return;
       }
       await setCurrentSong(songs[(currentIndex - 1) % songs.length]);
+      activeLibraryHandler(songs[(currentIndex - 1) % songs.length]);
     }
     if (isPlaying) audioRef.current.play(); //!Quando pular a música, fazer com que ela toque automaticamente
   };
