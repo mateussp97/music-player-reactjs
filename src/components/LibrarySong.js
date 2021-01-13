@@ -1,18 +1,19 @@
 import React from "react";
+import { playAudio } from "../util";
 
 const LibrarySong = ({
   song,
   songs,
+  setSongs,
   setCurrentSong,
   id,
   audioRef,
   isPlaying,
-  setSongs,
 }) => {
   const songSelectHandler = () => {
     setCurrentSong(song);
 
-    //! Add active state
+    //! Adiciona a estilização na song atual tocando (conforme active true/false), isso no libraryStatus
     const newSongs = songs.map((song) => {
       if (song.id === id) {
         return {
@@ -28,15 +29,8 @@ const LibrarySong = ({
     });
     setSongs(newSongs);
 
-    //! Check if the song is playing
-    if (isPlaying) {
-      const playPromise = audioRef.current.play();
-      if (playPromise !== undefined) {
-        playPromise.then((audio) => {
-          audioRef.current.play();
-        });
-      }
-    }
+    //! Verifica se a música está tocando
+    playAudio(isPlaying, audioRef);
   };
 
   return (

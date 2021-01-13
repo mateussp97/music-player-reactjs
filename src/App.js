@@ -10,26 +10,26 @@ import Nav from "./components/Nav";
 import "./styles/app.scss";
 
 //? Import util
-import data from "./util";
+import data from "./data";
 
 function App() {
   //* Ref
   const audioRef = useRef(null);
 
   //* State
-  const [songs, setSongs] = useState(data());
-  const [currentSong, setCurrentSong] = useState(songs[1]);
-  const [isPlaying, setIsPlaying] = useState(false); //* isPlaying start false, so is not playing anything
+  const [songs, setSongs] = useState(data()); //! songs inicia com valor de data(), então no songs está guardado o Array de dados das músicas
+  const [currentSong, setCurrentSong] = useState(songs[0]); //! currentSong inicia com song[0], então é a primeira música do Array songs
+  const [isPlaying, setIsPlaying] = useState(false); //! isPlaying inicia false, então não está tocando nada
   const [songInfo, setSongInfo] = useState({
     currentTime: 0,
     duration: 0,
-  });
-  const [libraryStatus, setLibraryStatus] = useState(false);
+  }); //! song info inicia com dois valores sendo os dois do tipo Number e com valor 0, o primeiro é referente ao tempo atual da música e o segundo a duração
+  const [libraryStatus, setLibraryStatus] = useState(false); //! libraryStatus inicia com valor false, então a libraryStatus está escondida, e só sera exibida ao clicar no botão Library que se encontra no component Nav
 
   //* Event Handlers
   const timeUpdateHandler = (e) => {
-    const current = e.target.currentTime; //* current: a state atual
-    const duration = e.target.duration; //* duration: duração da música
+    const current = e.target.currentTime;
+    const duration = e.target.duration;
     setSongInfo({ ...songInfo, currentTime: current, duration: duration });
   };
 
@@ -42,17 +42,18 @@ function App() {
         isPlaying={isPlaying}
         setIsPlaying={setIsPlaying}
         currentSong={currentSong}
-        setSongInfo={setSongInfo}
-        songInfo={songInfo}
-        songs={songs}
         setCurrentSong={setCurrentSong}
+        songInfo={songInfo}
+        setSongInfo={setSongInfo}
+        songs={songs}
+        setSongs={setSongs}
       />
       <Library
         audioRef={audioRef}
         songs={songs}
+        setSongs={setSongs}
         setCurrentSong={setCurrentSong}
         isPlaying={isPlaying}
-        setSongs={setSongs}
         libraryStatus={libraryStatus}
       />
       <audio
