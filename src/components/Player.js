@@ -20,26 +20,23 @@ const Player = ({
   setSongs,
 }) => {
   //* UseEffect
-  useEffect(
-    ({ songs, setSongs }) => {
-      //! Adiciona a estilização na song atual tocando (conforme active true/false), isso no libraryStatus
-      const newSongs = songs.map((song) => {
-        if (song.id === currentSong.id) {
-          return {
-            ...song,
-            active: true,
-          };
-        } else {
-          return {
-            ...song,
-            active: false,
-          };
-        }
-      });
-      setSongs(newSongs);
-    },
-    [currentSong]
-  ); //! [currentSong] é um parâmentro onde essa função vai ser executada toda vez que currentSong for atualizado
+  useEffect(() => {
+    //! Adiciona a estilização na song atual tocando (conforme active true/false), isso no libraryStatus
+    const newSongs = songs.map((song) => {
+      if (song.id === currentSong.id) {
+        return {
+          ...song,
+          active: true,
+        };
+      } else {
+        return {
+          ...song,
+          active: false,
+        };
+      }
+    });
+    setSongs(newSongs);
+  }, [currentSong]); //! [currentSong] é um parâmentro onde essa função vai ser executada toda vez que currentSong for atualizado
 
   //* Event Handlers
   //! Verifica se a música está tocando, se está, pausa, se não da play
